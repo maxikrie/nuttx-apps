@@ -33,11 +33,7 @@
  * Public Functions
  ****************************************************************************/
 
-/**
- * Utility function to log an array of bytes.
- */
-
-void print_bytes(const uint8_t *bytes, int len)
+void print_bytes(FAR const uint8_t *bytes, int len)
 {
   int i;
 
@@ -47,7 +43,7 @@ void print_bytes(const uint8_t *bytes, int len)
     }
 }
 
-void print_mbuf(const struct os_mbuf *om)
+void print_mbuf(FAR const struct os_mbuf *om)
 {
   int colon;
 
@@ -68,8 +64,7 @@ void print_mbuf(const struct os_mbuf *om)
     }
 }
 
-char *
-addr_str(const void *addr)
+char * addr_str(FAR const void *addr)
 {
   static char buf[6 * 2 + 5 + 1];
   const uint8_t *u8p;
@@ -81,18 +76,14 @@ addr_str(const void *addr)
   return buf;
 }
 
-void print_uuid(const ble_uuid_t *uuid)
+void print_uuid(FAR const ble_uuid_t *uuid)
 {
   char buf[BLE_UUID_STR_LEN];
 
   printf("%s", ble_uuid_to_str(uuid, buf));
 }
 
-/**
- * Logs information about a connection to the console.
- */
-
-void print_conn_desc(const struct ble_gap_conn_desc *desc)
+void print_conn_desc(FAR const struct ble_gap_conn_desc *desc)
 {
   printf("handle=%d our_ota_addr_type=%d our_ota_addr=%s ",
          desc->conn_handle, desc->our_ota_addr.type,
@@ -112,7 +103,7 @@ void print_conn_desc(const struct ble_gap_conn_desc *desc)
          desc->sec_state.bonded);
 }
 
-void print_adv_fields(const struct ble_hs_adv_fields *fields)
+void print_adv_fields(FAR const struct ble_hs_adv_fields *fields)
 {
   char s[BLE_HS_ADV_MAX_SZ];
   const uint8_t *u8p;

@@ -65,7 +65,7 @@ static void bleprph_advertise(void);
 static void nimble_host_task(FAR void *param);
 static FAR void *ble_hci_sock_task(FAR void *param);
 static FAR void *ble_host_task(FAR void *param);
-static int bleprph_gap_event(struct ble_gap_event *event, void *arg);
+static int bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg);
 
 /****************************************************************************
  * Private Data
@@ -76,7 +76,7 @@ static int bleprph_gap_event(struct ble_gap_event *event, void *arg);
  */
 
 static void
-bleprph_print_conn_desc(struct ble_gap_conn_desc *desc)
+bleprph_print_conn_desc(FAR struct ble_gap_conn_desc *desc)
 {
   printf("handle=%d our_ota_addr_type=%d our_ota_addr=",
          desc->conn_handle, desc->our_ota_addr.type);
@@ -199,7 +199,7 @@ bleprph_advertise(void)
  */
 
 static int
-bleprph_gap_event(struct ble_gap_event *event, void *arg)
+bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg)
 {
   struct ble_gap_conn_desc desc;
   int rc;

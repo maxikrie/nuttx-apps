@@ -66,7 +66,7 @@ void ble_hci_sock_set_device(int dev);
  * Private Functions Prototypes
  ****************************************************************************/
 
-static int blecent_gap_event(struct ble_gap_event *event, void *arg);
+static int blecent_gap_event(FAR struct ble_gap_event *event, FAR void *arg);
 
 /**
  * Application callback.  Called when the read of the ANS Supported New Alert
@@ -75,9 +75,9 @@ static int blecent_gap_event(struct ble_gap_event *event, void *arg);
 
 static int
 blecent_on_read(uint16_t conn_handle,
-                const struct ble_gatt_error *error,
-                struct ble_gatt_attr *attr,
-                void *arg)
+                FAR const struct ble_gatt_error *error,
+                FAR struct ble_gatt_attr *attr,
+                FAR void *arg)
 {
   printf("Read complete; status=%d conn_handle=%d", error->status,
          conn_handle);
@@ -98,9 +98,9 @@ blecent_on_read(uint16_t conn_handle,
 
 static int
 blecent_on_write(uint16_t conn_handle,
-                 const struct ble_gatt_error *error,
-                 struct ble_gatt_attr *attr,
-                 void *arg)
+                 FAR const struct ble_gatt_error *error,
+                 FAR struct ble_gatt_attr *attr,
+                 FAR void *arg)
 {
   printf("Write complete; status=%d conn_handle=%d attr_handle=%d\n",
          error->status, conn_handle, attr->handle);
@@ -116,9 +116,9 @@ blecent_on_write(uint16_t conn_handle,
 
 static int
 blecent_on_subscribe(uint16_t conn_handle,
-                     const struct ble_gatt_error *error,
-                     struct ble_gatt_attr *attr,
-                     void *arg)
+                     FAR const struct ble_gatt_error *error,
+                     FAR struct ble_gatt_attr *attr,
+                     FAR void *arg)
 {
   printf("Subscribe complete; status=%d conn_handle=%d "
          "attr_handle=%d\n",
@@ -141,7 +141,7 @@ blecent_on_subscribe(uint16_t conn_handle,
  */
 
 static void
-blecent_read_write_subscribe(const struct peer *peer)
+blecent_read_write_subscribe(FAR const struct peer *peer)
 {
   const struct peer_chr *chr;
   const struct peer_dsc *dsc;
@@ -235,7 +235,7 @@ err:
  */
 
 static void
-blecent_on_disc_complete(const struct peer *peer, int status, void *arg)
+blecent_on_disc_complete(FAR const struct peer *peer, int status,FAR void *arg)
 {
   if (status != 0)
     {
@@ -362,7 +362,7 @@ blecent_should_connect(const struct ble_gap_disc_desc *disc)
  */
 
 static void
-blecent_connect_if_interesting(const struct ble_gap_disc_desc *disc)
+blecent_connect_if_interesting(FAR const struct ble_gap_disc_desc *disc)
 {
   uint8_t own_addr_type;
   int rc;
@@ -423,7 +423,7 @@ blecent_connect_if_interesting(const struct ble_gap_disc_desc *disc)
  */
 
 static int
-blecent_gap_event(struct ble_gap_event *event, void *arg)
+blecent_gap_event(FAR struct ble_gap_event *event, FAR void *arg)
 {
   struct ble_gap_conn_desc desc;
   struct ble_hs_adv_fields fields;
@@ -643,7 +643,7 @@ static FAR void *ble_host_task(FAR void *param)
  * Name: nimble_main
  ****************************************************************************/
 
-int main(int argc, char **argv)
+int main(int argc, FAR char **argv)
 {
   struct ble_npl_task s_task_host;
   struct ble_npl_task s_task_hci;

@@ -28,11 +28,7 @@
  * Public Functions
  ****************************************************************************/
 
-/**
- * Utility function to log an array of bytes.
- */
-
-void print_bytes(const uint8_t *bytes, int len)
+void print_bytes(FAR const uint8_t *bytes, int len)
 {
   int i;
 
@@ -42,7 +38,7 @@ void print_bytes(const uint8_t *bytes, int len)
     }
 }
 
-void print_addr(const void *addr)
+void print_addr(FAR const void *addr)
 {
   const uint8_t *u8p;
 

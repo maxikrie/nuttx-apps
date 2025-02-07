@@ -105,8 +105,8 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] =
  ****************************************************************************/
 
 static int
-gatt_svr_chr_write(struct os_mbuf *om, uint16_t min_len, uint16_t max_len,
-                   void *dst, uint16_t *len)
+gatt_svr_chr_write(FAR struct os_mbuf *om, uint16_t min_len, uint16_t max_len,
+                   FAR void *dst, FAR uint16_t *len)
 {
   uint16_t om_len;
   int rc;
@@ -128,8 +128,8 @@ gatt_svr_chr_write(struct os_mbuf *om, uint16_t min_len, uint16_t max_len,
 
 static int
 gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_handle,
-                             struct ble_gatt_access_ctxt *ctxt,
-                             void *arg)
+                             FAR struct ble_gatt_access_ctxt *ctxt,
+                             FAR void *arg)
 {
   const ble_uuid_t *uuid;
   int rand_num;
@@ -182,7 +182,7 @@ gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_handle,
   return BLE_ATT_ERR_UNLIKELY;
 }
 
-void gatt_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
+void gatt_svr_register_cb(FAR struct ble_gatt_register_ctxt *ctxt, FAR void *arg)
 {
   char buf[BLE_UUID_STR_LEN];
 

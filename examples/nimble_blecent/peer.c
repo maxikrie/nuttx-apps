@@ -41,25 +41,25 @@ static struct os_mempool peer_pool;
 static SLIST_HEAD(, peer) peers;
 
 static struct peer_svc *
-peer_svc_find_range(struct peer *peer, uint16_t attr_handle);
+peer_svc_find_range(FAR struct peer *peer, uint16_t attr_handle);
 static struct peer_svc *
-peer_svc_find(struct peer *peer, uint16_t svc_start_handle,
+peer_svc_find(FAR struct peer *peer, uint16_t svc_start_handle,
               struct peer_svc **out_prev);
 int peer_svc_is_empty(const struct peer_svc *svc);
 
 uint16_t
-chr_end_handle(const struct peer_svc *svc, const struct peer_chr *chr);
-int chr_is_empty(const struct peer_svc *svc, const struct peer_chr *chr);
+chr_end_handle(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr);
+int chr_is_empty(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr);
 static struct peer_chr *
-peer_chr_find(const struct peer_svc *svc, uint16_t chr_def_handle,
-              struct peer_chr **out_prev);
+peer_chr_find(FAR const struct peer_svc *svc, uint16_t chr_def_handle,
+              FAR struct peer_chr **out_prev);
 static void
-peer_disc_chrs(struct peer *peer);
+peer_disc_chrs(FAR struct peer *peer);
 
 static int
-peer_dsc_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
-                uint16_t chr_val_handle, const struct ble_gatt_dsc *dsc,
-                void *arg);
+peer_dsc_disced(uint16_t conn_handle, FAR const struct ble_gatt_error *error,
+                uint16_t chr_val_handle, FAR const struct ble_gatt_dsc *dsc,
+                FAR void *arg);
 
 /****************************************************************************
  * Public Functions
@@ -80,7 +80,7 @@ static struct peer *peer_find(uint16_t conn_handle)
   return NULL;
 }
 
-static void peer_disc_complete(struct peer *peer, int rc)
+static void peer_disc_complete(FAR struct peer *peer, int rc)
 {
   peer->disc_prev_chr_val = 0;
 
@@ -93,7 +93,7 @@ static void peer_disc_complete(struct peer *peer, int rc)
 }
 
 static struct peer_dsc *
-peer_dsc_find_prev(const struct peer_chr *chr, uint16_t dsc_handle)
+peer_dsc_find_prev(FAR const struct peer_chr *chr, uint16_t dsc_handle)
 {
   struct peer_dsc *prev;
   struct peer_dsc *dsc;
@@ -113,8 +113,8 @@ peer_dsc_find_prev(const struct peer_chr *chr, uint16_t dsc_handle)
 }
 
 static struct peer_dsc *
-peer_dsc_find(const struct peer_chr *chr, uint16_t dsc_handle,
-              struct peer_dsc **out_prev)
+peer_dsc_find(FAR const struct peer_chr *chr, uint16_t dsc_handle,
+              FAR struct peer_dsc **out_prev)
 {
   struct peer_dsc *prev;
   struct peer_dsc *dsc;
@@ -143,8 +143,8 @@ peer_dsc_find(const struct peer_chr *chr, uint16_t dsc_handle,
 }
 
 static int
-peer_dsc_add(struct peer *peer, uint16_t chr_val_handle,
-             const struct ble_gatt_dsc *gatt_dsc)
+peer_dsc_add(FAR struct peer *peer, uint16_t chr_val_handle,
+             FAR const struct ble_gatt_dsc *gatt_dsc)
 {
   struct peer_dsc *prev;
   struct peer_dsc *dsc;
@@ -205,8 +205,7 @@ peer_dsc_add(struct peer *peer, uint16_t chr_val_handle,
   return 0;
 }
 
-static void
-peer_disc_dscs(struct peer *peer)
+static void peer_disc_dscs(FAR struct peer *peer)
 {
   struct peer_chr *chr;
   struct peer_svc *svc;
@@ -246,9 +245,9 @@ peer_disc_dscs(struct peer *peer)
 }
 
 static int
-peer_dsc_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
-                uint16_t chr_val_handle, const struct ble_gatt_dsc *dsc,
-                void *arg)
+peer_dsc_disced(uint16_t conn_handle, FAR const struct ble_gatt_error *error,
+                uint16_t chr_val_handle, FAR const struct ble_gatt_dsc *dsc,
+                FAR void *arg)
 {
   struct peer *peer;
   int rc;
@@ -294,7 +293,7 @@ peer_dsc_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
 }
 
 uint16_t
-chr_end_handle(const struct peer_svc *svc, const struct peer_chr *chr)
+chr_end_handle(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr)
 {
   const struct peer_chr *next_chr;
 
@@ -309,7 +308,7 @@ chr_end_handle(const struct peer_svc *svc, const struct peer_chr *chr)
     }
 }
 
-int chr_is_empty(const struct peer_svc *svc, const struct peer_chr *chr)
+int chr_is_empty(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr)
 {
   return chr_end_handle(svc, chr) <= chr->chr.val_handle;
 }
@@ -335,8 +334,8 @@ peer_chr_find_prev(const struct peer_svc *svc, uint16_t chr_val_handle)
 }
 
 static struct peer_chr *
-peer_chr_find(const struct peer_svc *svc, uint16_t chr_val_handle,
-              struct peer_chr **out_prev)
+peer_chr_find(FAR const struct peer_svc *svc, uint16_t chr_val_handle,
+              FAR struct peer_chr **out_prev)
 {
   struct peer_chr *prev;
   struct peer_chr *chr;
@@ -364,8 +363,7 @@ peer_chr_find(const struct peer_svc *svc, uint16_t chr_val_handle,
   return chr;
 }
 
-static void
-peer_chr_delete(struct peer_chr *chr)
+static void peer_chr_delete(FAR struct peer_chr *chr)
 {
   struct peer_dsc *dsc;
 
@@ -379,8 +377,8 @@ peer_chr_delete(struct peer_chr *chr)
 }
 
 static int
-peer_chr_add(struct peer *peer, uint16_t svc_start_handle,
-             const struct ble_gatt_chr *gatt_chr)
+peer_chr_add(FAR struct peer *peer, uint16_t svc_start_handle,
+             FAR const struct ble_gatt_chr *gatt_chr)
 {
   struct peer_chr *prev;
   struct peer_chr *chr;
@@ -430,8 +428,8 @@ peer_chr_add(struct peer *peer, uint16_t svc_start_handle,
 }
 
 static int
-peer_chr_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
-                const struct ble_gatt_chr *chr, void *arg)
+peer_chr_disced(uint16_t conn_handle, FAR const struct ble_gatt_error *error,
+                FAR const struct ble_gatt_chr *chr, FAR void *arg)
 {
   struct peer *peer;
   int rc;
@@ -473,8 +471,7 @@ peer_chr_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
   return rc;
 }
 
-static void
-peer_disc_chrs(struct peer *peer)
+static void peer_disc_chrs(FAR struct peer *peer)
 {
   struct peer_svc *svc;
   int rc;
@@ -507,13 +504,13 @@ peer_disc_chrs(struct peer *peer)
   peer_disc_dscs(peer);
 }
 
-int peer_svc_is_empty(const struct peer_svc *svc)
+int peer_svc_is_empty(FAR const struct peer_svc *svc)
 {
   return svc->svc.end_handle <= svc->svc.start_handle;
 }
 
 static struct peer_svc *
-peer_svc_find_prev(struct peer *peer, uint16_t svc_start_handle)
+peer_svc_find_prev(FAR struct peer *peer, uint16_t svc_start_handle)
 {
   struct peer_svc *prev;
   struct peer_svc *svc;
@@ -533,8 +530,8 @@ peer_svc_find_prev(struct peer *peer, uint16_t svc_start_handle)
 }
 
 static struct peer_svc *
-peer_svc_find(struct peer *peer, uint16_t svc_start_handle,
-              struct peer_svc **out_prev)
+peer_svc_find(FAR struct peer *peer, uint16_t svc_start_handle,
+              FAR struct peer_svc **out_prev)
 {
   struct peer_svc *prev;
   struct peer_svc *svc;
@@ -563,7 +560,7 @@ peer_svc_find(struct peer *peer, uint16_t svc_start_handle,
 }
 
 static struct peer_svc *
-peer_svc_find_range(struct peer *peer, uint16_t attr_handle)
+peer_svc_find_range(FAR struct peer *peer, uint16_t attr_handle)
 {
   struct peer_svc *svc;
 
@@ -580,7 +577,7 @@ peer_svc_find_range(struct peer *peer, uint16_t attr_handle)
 }
 
 const struct peer_svc *
-peer_svc_find_uuid(const struct peer *peer, const ble_uuid_t *uuid)
+peer_svc_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *uuid)
 {
   const struct peer_svc *svc;
 
@@ -596,8 +593,8 @@ peer_svc_find_uuid(const struct peer *peer, const ble_uuid_t *uuid)
 }
 
 const struct peer_chr *
-peer_chr_find_uuid(const struct peer *peer, const ble_uuid_t *svc_uuid,
-                   const ble_uuid_t *chr_uuid)
+peer_chr_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *svc_uuid,
+                   FAR const ble_uuid_t *chr_uuid)
 {
   const struct peer_svc *svc;
   const struct peer_chr *chr;
@@ -620,8 +617,8 @@ peer_chr_find_uuid(const struct peer *peer, const ble_uuid_t *svc_uuid,
 }
 
 const struct peer_dsc *
-peer_dsc_find_uuid(const struct peer *peer, const ble_uuid_t *svc_uuid,
-                   const ble_uuid_t *chr_uuid, const ble_uuid_t *dsc_uuid)
+peer_dsc_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *svc_uuid,
+                   FAR const ble_uuid_t *chr_uuid, FAR const ble_uuid_t *dsc_uuid)
 {
   const struct peer_chr *chr;
   const struct peer_dsc *dsc;
@@ -644,7 +641,7 @@ peer_dsc_find_uuid(const struct peer *peer, const ble_uuid_t *svc_uuid,
 }
 
 static int
-peer_svc_add(struct peer *peer, const struct ble_gatt_svc *gatt_svc)
+peer_svc_add(FAR struct peer *peer, FAR const struct ble_gatt_svc *gatt_svc)
 {
   struct peer_svc *prev;
   struct peer_svc *svc;
@@ -682,8 +679,7 @@ peer_svc_add(struct peer *peer, const struct ble_gatt_svc *gatt_svc)
   return 0;
 }
 
-static void
-peer_svc_delete(struct peer_svc *svc)
+static void peer_svc_delete(FAR struct peer_svc *svc)
 {
   struct peer_chr *chr;
 
@@ -697,8 +693,8 @@ peer_svc_delete(struct peer_svc *svc)
 }
 
 static int
-peer_svc_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
-                const struct ble_gatt_svc *service, void *arg)
+peer_svc_disced(uint16_t conn_handle, FAR const struct ble_gatt_error *error,
+                FAR const struct ble_gatt_svc *service, FAR void *arg)
 {
   struct peer *peer;
   int rc;
@@ -739,8 +735,8 @@ peer_svc_disced(uint16_t conn_handle, const struct ble_gatt_error *error,
   return rc;
 }
 
-int peer_disc_all(uint16_t conn_handle, peer_disc_fn *disc_cb,
-                  void *disc_cb_arg)
+int peer_disc_all(uint16_t conn_handle, FAR peer_disc_fn *disc_cb,
+                  FAR void *disc_cb_arg)
 {
   struct peer_svc *svc;
   struct peer *peer;
