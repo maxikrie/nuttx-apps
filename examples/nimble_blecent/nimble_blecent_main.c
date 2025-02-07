@@ -68,6 +68,14 @@ void ble_hci_sock_set_device(int dev);
 
 static int blecent_gap_event(FAR struct ble_gap_event *event, FAR void *arg);
 
+/****************************************************************************
+ * Private Data
+ ****************************************************************************/
+
+/****************************************************************************
+ * Name: blecent_on_read
+ ****************************************************************************/
+
 static int
 blecent_on_read(uint16_t conn_handle,
                 FAR const struct ble_gatt_error *error,
@@ -85,6 +93,10 @@ blecent_on_read(uint16_t conn_handle,
 
   return 0;
 }
+
+/****************************************************************************
+ * Name: blecent_on_write
+ ****************************************************************************/
 
 static int
 blecent_on_write(uint16_t conn_handle,
@@ -116,6 +128,10 @@ blecent_on_subscribe(uint16_t conn_handle,
 
   return 0;
 }
+
+/****************************************************************************
+ * Name: blecent_read_write_subscribe
+ ****************************************************************************/
 
 static void
 blecent_read_write_subscribe(FAR const struct peer *peer)
@@ -207,8 +223,13 @@ err:
   ble_gap_terminate(peer->conn_handle, BLE_ERR_REM_USER_CONN_TERM);
 }
 
+/****************************************************************************
+ * Name: blecent_on_disc_complete
+ ****************************************************************************/
+
 static void
-blecent_on_disc_complete(FAR const struct peer *peer, int status,FAR void *arg)
+blecent_on_disc_complete(FAR const struct peer *peer, int status,
+                         FAR void *arg)
 {
   if (status != 0)
     {
@@ -237,8 +258,11 @@ blecent_on_disc_complete(FAR const struct peer *peer, int status,FAR void *arg)
   blecent_read_write_subscribe(peer);
 }
 
-static void
-blecent_scan(void)
+/****************************************************************************
+ * Name: blecent_scan
+ ****************************************************************************/
+
+static void blecent_scan(void)
 {
   uint8_t own_addr_type;
   struct ble_gap_disc_params disc_params;
@@ -282,6 +306,10 @@ blecent_scan(void)
   }
 }
 
+/****************************************************************************
+ * Name: blecent_should_connect
+ ****************************************************************************/
+
 static int
 blecent_should_connect(const struct ble_gap_disc_desc *disc)
 {
@@ -317,6 +345,10 @@ blecent_should_connect(const struct ble_gap_disc_desc *disc)
 
   return 0;
 }
+
+/****************************************************************************
+ * Name: blecent_connect_if_interesting
+ ****************************************************************************/
 
 static void
 blecent_connect_if_interesting(FAR const struct ble_gap_disc_desc *disc)
@@ -362,6 +394,11 @@ blecent_connect_if_interesting(FAR const struct ble_gap_disc_desc *disc)
            disc->addr.type, addr_str(disc->addr.val), rc);
     return;
   }
+}
+
+/****************************************************************************
+ * Name: blecent_gap_event
+ ****************************************************************************/
 
 static int
 blecent_gap_event(FAR struct ble_gap_event *event, FAR void *arg)
@@ -530,6 +567,10 @@ blecent_on_reset(int reason)
 {
   printf("Resetting state; reason=%d\n", reason);
 }
+
+/****************************************************************************
+ * Name: blecent_on_sync
+ ****************************************************************************/
 
 static void
 blecent_on_sync(void)

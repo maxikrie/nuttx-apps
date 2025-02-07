@@ -71,6 +71,10 @@ static int bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg);
  * Private Data
  ****************************************************************************/
 
+/****************************************************************************
+ * Name: bleprph_print_conn_desc
+ ****************************************************************************/
+
 static void
 bleprph_print_conn_desc(FAR struct ble_gap_conn_desc *desc)
 {
@@ -94,6 +98,10 @@ bleprph_print_conn_desc(FAR struct ble_gap_conn_desc *desc)
          desc->sec_state.authenticated,
          desc->sec_state.bonded);
 }
+
+/****************************************************************************
+ * Name: bleprph_advertise
+ ****************************************************************************/
 
 static void bleprph_advertise(void)
 {
@@ -170,6 +178,10 @@ static void bleprph_advertise(void)
     return;
   }
 }
+
+/****************************************************************************
+ * Name: bleprph_gap_event
+ ****************************************************************************/
 
 static int
 bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg)
@@ -283,11 +295,19 @@ bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg)
   return 0;
 }
 
+/****************************************************************************
+ * Name: bleprph_on_reset
+ ****************************************************************************/
+
 static void
 bleprph_on_reset(int reason)
 {
   printf("Resetting state; reason=%d\n", reason);
 }
+
+/****************************************************************************
+ * Name: bleprph_on_sync
+ ****************************************************************************/
 
 static void
 bleprph_on_sync(void)
@@ -413,7 +433,7 @@ int main(int argc, FAR char *argv[])
         }
 
       ble_svc_bas_battery_level_set(batt_level);
-      sleep(1);
+      usleep(100000);
     }
 
   return 0;
