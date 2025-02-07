@@ -68,11 +68,6 @@ void ble_hci_sock_set_device(int dev);
 
 static int blecent_gap_event(FAR struct ble_gap_event *event, FAR void *arg);
 
-/**
- * Application callback.  Called when the read of the ANS Supported New Alert
- * Category characteristic has completed.
- */
-
 static int
 blecent_on_read(uint16_t conn_handle,
                 FAR const struct ble_gatt_error *error,
@@ -90,11 +85,6 @@ blecent_on_read(uint16_t conn_handle,
 
   return 0;
 }
-
-/**
- * Application callback. Called when the write to the ANS Alert Notification
- * Control Point characteristic has completed.
- */
 
 static int
 blecent_on_write(uint16_t conn_handle,
@@ -126,19 +116,6 @@ blecent_on_subscribe(uint16_t conn_handle,
 
   return 0;
 }
-
-/**
- * Performs three concurrent GATT operations against the specified peer:
- * 1. Reads the ANS Supported New Alert Category characteristic.
- * 2. Writes the ANS Alert Notification Control Point characteristic.
- * 3. Subscribes to notifications for the ANS Unread Alert Status
- *    characteristic.
- *
- * If the peer does not support a required service, characteristic, or
- * descriptor, then the peer lied when it claimed support for the alert
- * notification service!  When this happens, or if a GATT procedure fails,
- * this function immediately terminates the connection.
- */
 
 static void
 blecent_read_write_subscribe(FAR const struct peer *peer)
@@ -230,10 +207,6 @@ err:
   ble_gap_terminate(peer->conn_handle, BLE_ERR_REM_USER_CONN_TERM);
 }
 
-/**
- * Called when service discovery of the specified peer has completed.
- */
-
 static void
 blecent_on_disc_complete(FAR const struct peer *peer, int status,FAR void *arg)
 {
@@ -263,10 +236,6 @@ blecent_on_disc_complete(FAR const struct peer *peer, int status,FAR void *arg)
 
   blecent_read_write_subscribe(peer);
 }
-
-/**
- * Initiates the GAP general discovery procedure.
- */
 
 static void
 blecent_scan(void)
@@ -313,12 +282,6 @@ blecent_scan(void)
   }
 }
 
-/**
- * Indicates whether we should tre to connect to the sender of the specified
- * advertisement.  The function returns a positive result if the device
- * advertises connectability and support for the Alert Notification service.
- */
-
 static int
 blecent_should_connect(const struct ble_gap_disc_desc *disc)
 {
@@ -354,12 +317,6 @@ blecent_should_connect(const struct ble_gap_disc_desc *disc)
 
   return 0;
 }
-
-/**
- * Connects to the sender of the specified advertisement of it looks
- * interesting.  A device is "interesting" if it advertises
- * connectability and support for the Alert Notification service.
- */
 
 static void
 blecent_connect_if_interesting(FAR const struct ble_gap_disc_desc *disc)
@@ -405,22 +362,6 @@ blecent_connect_if_interesting(FAR const struct ble_gap_disc_desc *disc)
            disc->addr.type, addr_str(disc->addr.val), rc);
     return;
   }
-}
-
-/**
- * The nimble host executes this callback when a GAP event occurs.  The
- * application associates a GAP event callback with each connection that is
- * established.  blecent uses the same callback for all connections.
- *
- * @param event                 The event being signalled.
- * @param arg                   Application-specified argument; unused by
- *                                  blecent.
- *
- * @return                      0 if the application successfully handled the
- *                                  event; nonzero on failure.  The semantics
- *                                  of the return code is specific to the
- *                                  particular GAP event being signalled.
- */
 
 static int
 blecent_gap_event(FAR struct ble_gap_event *event, FAR void *arg)

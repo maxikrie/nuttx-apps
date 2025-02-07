@@ -71,10 +71,6 @@ static int bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg);
  * Private Data
  ****************************************************************************/
 
-/**
- * Logs information about a connection to the console.
- */
-
 static void
 bleprph_print_conn_desc(FAR struct ble_gap_conn_desc *desc)
 {
@@ -99,14 +95,7 @@ bleprph_print_conn_desc(FAR struct ble_gap_conn_desc *desc)
          desc->sec_state.bonded);
 }
 
-/**
- * Enables advertising with the following parameters:
- *     o General discoverable mode.
- *     o Undirected connectable mode.
- */
-
-static void
-bleprph_advertise(void)
+static void bleprph_advertise(void)
 {
   uint8_t own_addr_type;
   struct ble_gap_adv_params adv_params;
@@ -181,22 +170,6 @@ bleprph_advertise(void)
     return;
   }
 }
-
-/**
- * The nimble host executes this callback when a GAP event occurs.
- * The application associates a GAP event callback with each connection
- * that forms. bleprph uses the same callback for all connections.
- *
- * @param event                 The type of event being signalled.
- * @param ctxt                  Various information pertaining to the event.
- * @param arg                   Application-specified argument; unuesd by
- *                                  bleprph.
- *
- * @return                      0 if the application successfully handled the
- *                                  event; nonzero on failure.  The semantics
- *                                  of the return code is specific to the
- *                                  particular GAP event being signalled.
- */
 
 static int
 bleprph_gap_event(FAR struct ble_gap_event *event, FAR void *arg)
