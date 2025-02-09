@@ -48,8 +48,11 @@ peer_svc_find(FAR struct peer *peer, uint16_t svc_start_handle,
 int peer_svc_is_empty(const struct peer_svc *svc);
 
 uint16_t
-chr_end_handle(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr);
-int chr_is_empty(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr);
+chr_end_handle(FAR const struct peer_svc *svc,
+               FAR const struct peer_chr *chr);
+int
+chr_is_empty(FAR const struct peer_svc *svc,
+             FAR const struct peer_chr *chr);
 static struct peer_chr *
 peer_chr_find(FAR const struct peer_svc *svc, uint16_t chr_def_handle,
               FAR struct peer_chr **out_prev);
@@ -293,7 +296,8 @@ peer_dsc_disced(uint16_t conn_handle, FAR const struct ble_gatt_error *error,
 }
 
 uint16_t
-chr_end_handle(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr)
+chr_end_handle(FAR const struct peer_svc *svc,
+               FAR const struct peer_chr *chr)
 {
   const struct peer_chr *next_chr;
 
@@ -308,7 +312,8 @@ chr_end_handle(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr)
     }
 }
 
-int chr_is_empty(FAR const struct peer_svc *svc, FAR const struct peer_chr *chr)
+int chr_is_empty(FAR const struct peer_svc *svc,
+                 FAR const struct peer_chr *chr)
 {
   return chr_end_handle(svc, chr) <= chr->chr.val_handle;
 }
@@ -593,8 +598,8 @@ peer_svc_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *uuid)
 }
 
 const struct peer_chr *
-peer_chr_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *svc_uuid,
-                   FAR const ble_uuid_t *chr_uuid)
+peer_chr_find_uuid(FAR const struct peer *peer,
+                   FAR const ble_uuid_t *svc_uuid, FAR const ble_uuid_t *chr_uuid)
 {
   const struct peer_svc *svc;
   const struct peer_chr *chr;
@@ -617,8 +622,10 @@ peer_chr_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *svc_uuid,
 }
 
 const struct peer_dsc *
-peer_dsc_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *svc_uuid,
-                   FAR const ble_uuid_t *chr_uuid, FAR const ble_uuid_t *dsc_uuid)
+peer_dsc_find_uuid(FAR const struct peer *peer,
+                   FAR const ble_uuid_t *svc_uuid,
+                   FAR const ble_uuid_t *chr_uuid,
+                   FAR const ble_uuid_t *dsc_uuid)
 {
   const struct peer_chr *chr;
   const struct peer_dsc *dsc;
