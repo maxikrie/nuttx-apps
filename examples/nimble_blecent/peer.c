@@ -599,7 +599,8 @@ peer_svc_find_uuid(FAR const struct peer *peer, FAR const ble_uuid_t *uuid)
 
 const struct peer_chr *
 peer_chr_find_uuid(FAR const struct peer *peer,
-                   FAR const ble_uuid_t *svc_uuid, FAR const ble_uuid_t *chr_uuid)
+                   FAR const ble_uuid_t *svc_uuid,
+                   FAR const ble_uuid_t *chr_uuid)
 {
   const struct peer_svc *svc;
   const struct peer_chr *chr;
